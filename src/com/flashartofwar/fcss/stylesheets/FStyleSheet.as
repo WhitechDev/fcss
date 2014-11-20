@@ -59,7 +59,7 @@ package com.flashartofwar.fcss.stylesheets
          */
         public function get styleNames():Array
         {
-            return _styleNames.slice();
+            return _styleNames;
         }
 
         /**

@@ -45,6 +45,7 @@ package com.flashartofwar.fcss.stylesheets
         protected var styleSheetInstances:Array = [];
         protected var _styleSheetNames:Array = [];
         protected var _name:String;
+        private var _styleNames:Array;
 
         /**
          *
@@ -57,7 +58,7 @@ package com.flashartofwar.fcss.stylesheets
 
         public function get styleSheetNames():Array
         {
-            return _styleSheetNames.slice();
+            return _styleSheetNames;
         }
 
         /**
@@ -82,6 +83,7 @@ package com.flashartofwar.fcss.stylesheets
             {
                 styleSheetInstances[index] = sheet;
             }
+			_styleNames = null;
             return sheet;
         }
 
@@ -104,6 +106,7 @@ package com.flashartofwar.fcss.stylesheets
         {
             styleSheetInstances.length = 0;
             _styleSheetNames.length = 0;
+			_styleNames = null;
         }
 
         /**
@@ -193,6 +196,7 @@ package com.flashartofwar.fcss.stylesheets
         public function newStyle(name:String, style:IStyle):void
         {
             baseStyleSheet.newStyle(name, style);
+			_styleNames = null;
         }
 
         /**
@@ -248,6 +252,7 @@ package com.flashartofwar.fcss.stylesheets
             // Remove reference to sheets
             styleSheetInstances.splice(index, 1);
             _styleSheetNames.splice(index, 1);
+			_styleNames = null;
 
             return styleSheet;
         }
@@ -258,28 +263,30 @@ package com.flashartofwar.fcss.stylesheets
          */
         public function get styleNames():Array
         {
-            var styleNames:Array = [];
-
-            var styleSheet:IStyleSheet;
-            var styles:Array;
-            var total:int;
-            var i:int;
-            var styleName:String;
-
-            //TODO this may need to be optimized a lot more
-            for each (styleSheet in styleSheetInstances)
-            {
-                styles = styleSheet.styleNames;
-                total = styles.length;
-
-                for (i = 0; i < total; i ++)
-                {
-                    styleName = styles[i];
-                    if (styleNames.indexOf(styleName) == - 1)
-                        styleNames.push(styleName);
-                }
-            }
-            return styleNames;
+			if(!_styleNames){
+	            _styleNames = [];
+	
+	            var styleSheet:IStyleSheet;
+	            var styles:Array;
+	            var total:int;
+	            var i:int;
+	            var styleName:String;
+	
+	            //TODO this may need to be optimized a lot more
+	            for each (styleSheet in styleSheetInstances)
+	            {
+	                styles = styleSheet.styleNames;
+	                total = styles.length;
+	
+	                for (i = 0; i < total; i ++)
+	                {
+	                    styleName = styles[i];
+	                    if (_styleNames.indexOf(styleName) == - 1)
+							_styleNames.push(styleName);
+	                }
+	            }
+			}
+            return _styleNames;
         }
 
         /**
